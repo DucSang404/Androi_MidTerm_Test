@@ -2,7 +2,10 @@ package com.example.midterm_exam.service;
 
 import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.AccountResponse;
+import com.example.midterm_exam.model.Category;
 import com.example.midterm_exam.model.User;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,5 +19,4 @@ public interface ApiService {
 
     @POST("api/v1/login")
     Call<AccountResponse> login(@Body Account request);
-
 }
