@@ -3,7 +3,10 @@ package com.example.midterm_exam.service;
 import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.OtpRequest;
+import com.example.midterm_exam.model.Category;
 import com.example.midterm_exam.model.User;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
