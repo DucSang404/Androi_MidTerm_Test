@@ -63,13 +63,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        if (response.body().isSuccess()) {
-                            Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(VerifyOtpActivity.this, MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(VerifyOtpActivity.this, MainActivity.class));
+                        finish();
                     } else {
                         Toast.makeText(VerifyOtpActivity.this, "Invalid OTP!", Toast.LENGTH_SHORT).show();
                     }
