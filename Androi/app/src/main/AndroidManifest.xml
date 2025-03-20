@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MidtermExam"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -28,6 +31,9 @@
         </activity>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".RegisterActivity"/>
+        <activity android:name=".HomeActivity"/>
+
+
     </application>
 
 </manifest>

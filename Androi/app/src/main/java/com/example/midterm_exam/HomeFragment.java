@@ -1,64 +1,145 @@
 package com.example.midterm_exam;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.midterm_exam.mapper.CategoryMapper;
+import com.example.midterm_exam.model.ApiResponse;
+import com.example.midterm_exam.model.Category;
+import com.example.midterm_exam.model.CategoryResponse;
+import com.example.midterm_exam.service.ApiService;
+import com.example.midterm_exam.service.CategoryService;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
+    //phạm tiến anh - nguyễn hoàng thùy linh - hoàng thị mỹ linh
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView rcCate;
+    private GridView gridView;
+    private CategoryAdapter categoryAdapter;
+    private ProductGridAdapter productAdapter; // Adapter riêng cho GridView
+    private ApiService apiService;
+    private List<Category> categoryList = new ArrayList<>();
+    private List<Category> lastProduct = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-    public HomeFragment() {
-        // Required empty public constructor
+        rcCate = view.findViewById(R.id.rc_category);
+        gridView = view.findViewById(R.id.gridview1);
+
+        setupRecyclerView();
+        setupGridView();
+
+        fetchAllCategory();
+        fetchLastProduct();
+
+        return view;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    private void setupRecyclerView() {
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+        rcCate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rcCate.setHasFixedSize(true);
+        rcCate.setAdapter(categoryAdapter);
+        autoScrollRecyclerView(); // Bắt đầu tự động cuộn
+    }
+
+    private void setupGridView() {
+        productAdapter = new ProductGridAdapter(getContext(), lastProduct);
+        gridView.setAdapter(productAdapter);
+    }
+
+
+    private void fetchAllCategory () {
+        CategoryService categoryService = new CategoryService();
+
+        categoryService.fetchCategoryData(new CategoryService.CategoryCallBack() {
+            @Override
+            public void onSuccess(ApiResponse<List<CategoryResponse>> categorysResponses) {
+                List<CategoryResponse> categoryResponseList = categorysResponses.getResult();
+                categoryList.clear(); // Xóa dữ liệu cũ
+                categoryList.addAll(CategoryMapper.toCategoryList(categoryResponseList)); // Thêm dữ liệu mới
+                categoryAdapter.notifyDataSetChanged();
+                productAdapter.notifyDataSetChanged(); // Cập nhật GridView
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("MainActivity", errorMessage);
+            }
+        });
+    }
+
+    private void fetchLastProduct () {
+
+        CategoryService categoryService = new CategoryService();
+        CategoryMapper mapper = new CategoryMapper();
+
+        String username = "admin";
+
+        categoryService.fetchLastProductForUser(username,new CategoryService.CategoryCallBack() {
+            @Override
+            public void onSuccess(ApiResponse<List<CategoryResponse>> categorysResponses) {
+                List<CategoryResponse> categoryResponseList = categorysResponses.getResult();
+                lastProduct.clear(); // Xóa dữ liệu cũ
+                lastProduct.addAll(CategoryMapper.toCategoryList(categoryResponseList)); // Thêm dữ liệu mới
+                productAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("MainActivity", errorMessage);
+            }
+        });
+    }
+
+
+
+    // hiệu ứng cuộn
+    private int currentPosition = 0;
+    private final long DELAY_MS = 1000; // 2 giây
+    private final long PERIOD_MS = 1000; // 3 giây
+    private Handler handler = new Handler();
+    private Runnable runnable;
+
+    private void autoScrollRecyclerView() {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (categoryAdapter != null && categoryAdapter.getItemCount() > 0) {
+                    currentPosition++;
+                    if (currentPosition >= categoryAdapter.getItemCount()) {
+                        currentPosition = 0; // Quay về đầu khi đến cuối
+                    }
+                    rcCate.smoothScrollToPosition(currentPosition);
+                }
+                handler.postDelayed(this, PERIOD_MS);
+            }
+        };
+
+        handler.postDelayed(runnable, DELAY_MS);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }

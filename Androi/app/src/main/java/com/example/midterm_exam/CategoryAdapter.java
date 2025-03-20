@@ -17,51 +17,55 @@ import com.example.midterm_exam.model.Category;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+    private Context context;
+    private List<Category> categoryList;
 
-    Context context;
-    List<Category> array;
-
-    public CategoryAdapter(Context context, List<Category> array) {
+    public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
-        this.array = array;
+        this.categoryList = categoryList;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_category, null);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        View view = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
+        return new MyViewHolder(view);
     }
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        public ImageView images;
-        public TextView tenSp;
-        public MyViewHolder(@NonNull View itemView){
-            super(itemView);
-            images = (ImageView) itemView.findViewById(R.id.image_cate);
-            tenSp = (TextView) itemView.findViewById(R.id.tvNameCategory);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Bạn đã chọn Category : "+tenSp.getText().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = array.get(position);
-        holder.tenSp.setText(category.getName());
+        Category category = categoryList.get(position);
+        holder.tvCategoryName.setText(category.getName());
 
         Glide.with(context)
                 .load(category.getImages())
-                .into(holder.images);
+                .placeholder(R.drawable.ic_1) // Ảnh mặc định khi tải
+                .error(R.drawable.ic_2) // Ảnh khi lỗi
+                .into(holder.ivCategoryImage);
+
+        holder.itemView.setOnClickListener(v ->
+                Toast.makeText(context, "Bạn đã chọn Category: " + category.getName(), Toast.LENGTH_SHORT).show()
+        );
     }
 
     @Override
     public int getItemCount() {
-       return array == null ? 0 :array.size();
+        return (categoryList != null) ? categoryList.size() : 0;
+    }
+
+    public void updateData(List<Category> newCategories) {
+        this.categoryList = newCategories;
+        notifyDataSetChanged();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivCategoryImage;
+        private TextView tvCategoryName;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivCategoryImage = itemView.findViewById(R.id.image_cate);
+            tvCategoryName = itemView.findViewById(R.id.tvNameCategory);
+        }
     }
 }

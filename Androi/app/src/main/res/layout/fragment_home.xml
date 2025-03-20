@@ -9,22 +9,17 @@
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".HomeActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="8"
         android:gravity="center_vertical">
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
@@ -146,6 +141,15 @@
             android:layout_marginEnd="16dp" />
     </androidx.core.widget.NestedScrollView>
 
+    <TextView
+        android:id="@+id/tvLastProductTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Product"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -156,23 +160,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvLastProductTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Product"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProducts"
+            <GridView
+                android:id="@+id/gridview1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3"
-                android:nestedScrollingEnabled="false"/>
+                android:layout_height="509dp"
+                android:numColumns="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnUpdate"
+                app:layout_constraintVertical_bias="1.0" />
         </LinearLayout>
     </ScrollView>
 

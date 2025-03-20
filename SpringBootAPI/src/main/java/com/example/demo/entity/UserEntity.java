@@ -1,9 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.HashSet;
+import java.util.Set;
 
 // Nguyễn Duy Phong - 22110395
 // Nguyễn Công Quý - 22110403
@@ -17,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends AbstractEntity {
+
     @Column(name = "password")
     String password;
 
@@ -34,4 +37,12 @@ public class UserEntity extends AbstractEntity {
 
     @Column(name = "picture")
     String picture;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_category", // Tên bảng trung gian
+            joinColumns = @JoinColumn(name = "user_id"), // Khóa ngoại của Student
+            inverseJoinColumns = @JoinColumn(name = "category_id") // Khóa ngoại của Course
+    )
+    private Set<CategoryEntity> categorys = new HashSet<>();
 }
