@@ -17,25 +17,29 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends AbstractEntity {
 
-    @Column(name = "user_name", unique = true,
-            columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String username;
-
     @Column(name = "password")
     String password;
 
-    @Column(name = "first_name")
-    String firstName;
-
-    @Column(name = "last_name")
-    String lastName;
+    @Column(name = "full_name")
+    String fullName;
 
     @Column(name = "email")
     String email;
+
+    @Column(name = "otp")
+    String otp;
 
     @Column(name = "is_active")
     Integer isActive;
 
     @Column(name = "picture")
     String picture;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_category", // Tên bảng trung gian
+            joinColumns = @JoinColumn(name = "user_id"), // Khóa ngoại của Student
+            inverseJoinColumns = @JoinColumn(name = "category_id") // Khóa ngoại của Course
+    )
+    private Set<CategoryEntity> categorys = new HashSet<>();
 }
