@@ -1,10 +1,9 @@
 package com.example.midterm_exam.model;
 
 public class ApiResponse<T> {
-    int code=1000;
+    int code;
     String message;
     T result;
-
 
     public ApiResponse(int code, String message, T result) {
         this.code = code;
@@ -20,12 +19,29 @@ public class ApiResponse<T> {
     public ApiResponse() {
     }
 
+
+    public ApiResponse(int code) {
+        this.code = code;
+    }
+
+    public ApiResponse(int code, T result) {
+        this.code = code;
+        this.result = result;
+    }
+
     public int getCode() {
         return code;
     }
 
     public void setCode(int code) {
         this.code = code;
+    }
+// Lê Trường Sơn 22110507
+
+    private boolean success;
+
+    public boolean isSuccess() {
+        return success;
     }
 
     public String getMessage() {
@@ -44,4 +60,3 @@ public class ApiResponse<T> {
         this.result = result;
     }
 }
-

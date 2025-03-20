@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, user.getMessage(), Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, VerifyOtpActivity.class);
                             intent.putExtra("email", edtEmail.getText().toString());
                             startActivity(intent);
                         }
