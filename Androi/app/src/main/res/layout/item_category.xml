@@ -1,0 +1,39 @@
+<androidx.cardview.widget.CardView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    android:layout_marginRight="8dp"
+    android:elevation="8dp"
+    android:padding="5dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="410dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_cate"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNameCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="412dp"
+            android:text="Name cate"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="@+id/image_cate"
+            app:layout_constraintStart_toStartOf="@+id/image_cate"
+            app:layout_constraintTop_toTopOf="@+id/image_cate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
