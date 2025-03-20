@@ -24,6 +24,7 @@ public class CategoryService { // phạm tiến anh - 22110282
     UserRepository userRepository;
 
     private CategoryEntity mapper (CategoryRequest categoryRequest) {
+
         return CategoryEntity.builder()
                 .name(categoryRequest.getName())
                 .description(categoryRequest.getDescription())
@@ -55,16 +56,22 @@ public class CategoryService { // phạm tiến anh - 22110282
                 .collect(Collectors.toList());
     }
 
-    public List<CategoryResponse> getAllCategoriesByUsername(GetCategoryRequest request) {
-//        List<CategoryEntity> categoryEntities = categoryRepository.findCategoriesByUsername(request.getUsername());
-        UserEntity userEntity = userRepository.findByEmail(request.getUsername());
-
-        if (userEntity == null) {
-            return new ArrayList<>();
-        }
-
-        return userEntity.getCategorys().stream()
+    public List<CategoryResponse> getAllCategoriesByUsername(String email) {
+        List<CategoryEntity> categoryEntities = categoryRepository.findCategoriesByUsername(email);
+        return categoryEntities.stream()
                 .map(this::mapper)
                 .collect(Collectors.toList());
+    }
+
+    public boolean addCategoryForUser(GetCategoryRequest request) {
+        UserEntity user = userRepository.findByEmail(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        CategoryEntity category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        user.getCategorys().add(category);
+        userRepository.save(user);
+        return true;
     }
 }

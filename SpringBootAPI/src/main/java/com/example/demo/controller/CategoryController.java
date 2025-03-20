@@ -35,6 +35,20 @@ public class CategoryController { // phạm tiến anh - 22110282
                 .build();
     }
 
+
+    @PostMapping("category-for-user")
+    ApiResponse<Boolean> addCategoryForUser(@RequestBody GetCategoryRequest request) {
+        Boolean response = categoryService.addCategoryForUser(request);
+
+        String message = (response) ? "successful" : "fail";
+
+        return ApiResponse.<Boolean>builder()
+                .message(message)
+                .code(200)
+                .result(response)
+                .build();
+    }
+
     @GetMapping("all-category")
     public ApiResponse<List<CategoryResponse>> getCategory() {
         List<CategoryResponse> response = categoryService.getAllCategories();
@@ -47,10 +61,8 @@ public class CategoryController { // phạm tiến anh - 22110282
     }
 
     @GetMapping("last-product")
-    public ApiResponse<List<CategoryResponse>> getProductByUser(GetCategoryRequest request) {
-        List<CategoryResponse> response = categoryService.getAllCategoriesByUsername(request);
-
-//        request.setUsername("nguyenvana@example.com");
+    public ApiResponse<List<CategoryResponse>> getProductByUser(@RequestParam String username) {
+        List<CategoryResponse> response = categoryService.getAllCategoriesByUsername(username);
 
         return ApiResponse.<List<CategoryResponse>>builder()
                 .message("Fetched categories successfully!")

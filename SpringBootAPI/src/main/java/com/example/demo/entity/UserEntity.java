@@ -35,7 +35,7 @@ public class UserEntity extends AbstractEntity {
     @Column(name = "picture")
     String picture;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_category", // Tên bảng trung gian
             joinColumns = @JoinColumn(name = "user_id"), // Khóa ngoại của Student

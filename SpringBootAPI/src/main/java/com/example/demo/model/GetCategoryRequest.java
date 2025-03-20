@@ -10,4 +10,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GetCategoryRequest { // phạm tiến anh - 22110282
     private String username;
+    private String categoryId;
 }
