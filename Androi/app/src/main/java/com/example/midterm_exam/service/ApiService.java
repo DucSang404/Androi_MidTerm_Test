@@ -1,5 +1,6 @@
 package com.example.midterm_exam.service;
 
+import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.CategoryResponse;
 import com.example.midterm_exam.model.Account;
@@ -21,7 +22,7 @@ public interface ApiService {
     // phạm tiến anh - 22110282
     @GET("api/v1/users/{id}")
     Call<User> getUser(@Path("id") int userId);
-    
+
     @GET("api/v1/category/all-category")
     Call<ApiResponse<List<CategoryResponse>>> getCategory();
 
@@ -32,6 +33,8 @@ public interface ApiService {
     @POST("api/v1/login")
     Call<Account> login(@Path("username") String username, @Path("password") String password);
 
+    @POST("api/v1/login")
+    Call<ApiResponse<User>> login(@Body Account account);
     @POST("api/v1/verify-user")
     Call<ApiResponse> verifyOtp(@Body OtpRequest otpRequest);
 }
