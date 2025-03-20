@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: ${DBMS_URL:jdbc:mysql://localhost:3306/contest}
+    url: ${DBMS_URL:jdbc:mysql://localhost:3300/contest-mobile}
     username: ${DBMS_USERNAME:root}
-    password: ${DBMS_PASSWORD:1942004anh}
+    password: ${DBMS_PASSWORD:1234}
     driverClassName: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5

@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.UserEntity;
 import com.example.demo.model.*;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.AuthService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,10 +10,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Slf4j
@@ -24,13 +23,40 @@ public class UserController {
 
     AuthService authService;
     UserService userService;
+    IUserRepository userRepository;
+
+    @GetMapping("/demo")
+    ApiResponse<String> demo() {
+        UserEntity user = UserEntity.builder()
+                .email("ducsang")
+                .password("1234")
+                .picture("dkfeifere")
+                .fullName("dsdsd")
+                .build();
+        userRepository.save(
+                user
+        );
+        return ApiResponse.<String>builder()
+                .message("")
+                .code(200)
+                .result(user.getEmail())
+                .build();
+    }
 
     // Nguyễn Công Quý - 22110403
     @PostMapping("/register")
     ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+        userRepository.save(
+                UserEntity.builder()
+                        .email("ducsang")
+                        .password("1234")
+                        .picture("dkfeifere")
+                        .fullName("dsdsd")
+                        .build()
+        );
         return ApiResponse.<UserResponse>builder()
                 .code(200)
-                .result(userService.register(registerRequest))
+                // .result(userService.register(registerRequest))
                 .build();
     }
 
@@ -38,6 +64,7 @@ public class UserController {
     @PostMapping("/login")
     ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
         return ApiResponse.<UserResponse>builder()
+                .message("")
                 .code(200)
                 .result(userService.login(loginRequest))
                 .build();
