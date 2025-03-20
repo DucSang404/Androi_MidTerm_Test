@@ -1,24 +1,17 @@
 package com.example.demo.model;
 
-// Nguyễn Công Quý - 22110403
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+// Nguyễn Duy Phong - 22110395
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class UserResponse {
-    String password;
-
-    String fullName;
-
+public class VerifyRequest {
     String email;
-
-    Integer isActive;
-
-    String picture;
+    String otp;
 }

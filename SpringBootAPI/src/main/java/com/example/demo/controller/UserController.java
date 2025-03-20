@@ -1,16 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ApiResponse;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
+import com.example.demo.service.AuthService;
+import com.example.demo.service.UserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,34 +22,48 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserController {
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") int id) {
-        User user = User.builder()
-                .id(1)
-                .email("demo@gmail.com")
-                .name("demo")
-                .build();
-        return ResponseEntity.ok(user);
-    }
+    AuthService authService;
+    UserService userService;
 
-    @PostMapping("/create-user")
-    ApiResponse<Object> createUser() {
-        return ApiResponse.<Object>builder()
+    // Nguyễn Công Quý - 22110403
+    @PostMapping("/register")
+    ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+        return ApiResponse.<UserResponse>builder()
                 .code(200)
+                .result(userService.register(registerRequest))
                 .build();
     }
 
-    @GetMapping("/get-all-user")
-    ApiResponse<List<Object>> getAllUsers() {
-        return ApiResponse.<List<Object>>builder()
+    // Nguyễn Công Quý - 22110403
+    @PostMapping("/login")
+    ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ApiResponse.<UserResponse>builder()
                 .code(200)
+                .result(userService.login(loginRequest))
                 .build();
     }
 
-    @GetMapping("/get-user/{id}")
-    ApiResponse<Object> getUserById(@PathVariable("id") String id) {
-        return ApiResponse.<Object>builder()
-                .code(200)
-                .build();
+
+    // Nguyễn Duy Phong - 22110395
+    @PostMapping("/verify-user")
+    ApiResponse<String> verifyUser(@RequestBody VerifyRequest request) {
+        int status = authService.verifyUser(request.getEmail(), request.getOtp());
+
+        if (status == -1) {
+            return ApiResponse.<String>builder()
+                    .code(404)
+                    .message("Email not found")
+                    .build();
+        } else if (status == 0) {
+            return ApiResponse.<String>builder()
+                    .code(400)
+                    .message("OTP does not match")
+                    .build();
+        } else {
+            return ApiResponse.<String>builder()
+                    .code(200)
+                    .message("Verification successful")
+                    .build();
+        }
     }
 }
