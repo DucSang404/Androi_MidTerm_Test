@@ -1,12 +1,13 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+// Nguyễn Duy Phong - 22110395
+// Nguyễn Công Quý - 22110403
+
 
 @Entity(name = "tbl_user")
 @Getter
@@ -16,22 +17,17 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends AbstractEntity {
-
-    @Column(name = "user_name", unique = true,
-            columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String username;
-
     @Column(name = "password")
     String password;
 
-    @Column(name = "first_name")
-    String firstName;
-
-    @Column(name = "last_name")
-    String lastName;
+    @Column(name = "full_name")
+    String fullName;
 
     @Column(name = "email")
     String email;
+
+    @Column(name = "otp")
+    String otp;
 
     @Column(name = "is_active")
     Integer isActive;
