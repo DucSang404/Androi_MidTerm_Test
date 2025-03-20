@@ -50,12 +50,16 @@ public class HomeFragment extends Fragment {
         String pictureUrl = prefManager.getPicture();
 
         TextView tvFullName = view.findViewById(R.id.tvUserName);
-        ImageView imgProfile = view.findViewById(R.id.cardView);
+        ImageView imgProfile = view.findViewById(R.id.avtUser);
 
         tvFullName.setText(fullName);
 
         if (!pictureUrl.isEmpty()) {
-            Glide.with(this).load(pictureUrl).into(imgProfile);
+            try {
+                Glide.with(this).load(pictureUrl).into(imgProfile);
+            } catch (Exception e) {
+                Glide.with(this).load(R.drawable.ic_launcher_background).into(imgProfile);
+            }
         }
 
         rcCate = view.findViewById(R.id.rc_category);
