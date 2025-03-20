@@ -1,6 +1,7 @@
 package com.example.midterm_exam.service;
 
 import com.example.midterm_exam.model.Account;
+import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.User;
 
 import retrofit2.Call;
@@ -14,7 +15,7 @@ public interface ApiService {
     Call<User> getUser(@Path("id") int userId);
 
     @POST("api/v1/register")
-    Call<User> register(@Body User user);
+    Call<ApiResponse<User>> register(@Body User user);
     @POST("api/v1/login")
     Call<Account> login(@Path("username") String username, @Path("password") String password);
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.User;
 import com.example.midterm_exam.service.RegisterService;
 
@@ -73,13 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-//        User user = new User(name, email, password, gender);
-        User user = new User(1, email, password);
+        boolean g = gender.equals("Female");
+        User user = new User(name, email, password, g);
 
         registerService.registerUser(user, new RegisterService.RegisterCallback() {
             @Override
-            public void onSuccess(User user) {
+            public void onSuccess(ApiResponse<User> user) {
                 Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, VerifyOtpActivity.class);
                 intent.putExtra("email", edtEmail.getText().toString());
