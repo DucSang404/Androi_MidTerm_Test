@@ -17,6 +17,19 @@ spring:
       max-lifetime: 600000
       pool-name: HikariCP
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: duyphong02802@gmail.com
+    password: aymqvnmmhkjbuytz
+    from: "Food.Dr <duyphong02802@gmail.com>"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   jpa:
     hibernate:
       ddl-auto: update
