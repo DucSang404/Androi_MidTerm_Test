@@ -1,5 +1,6 @@
 package com.example.midterm_exam;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -55,7 +56,9 @@ public class HomeFragment extends Fragment {
         tvFullName.setText(fullName);
 
         if (!pictureUrl.isEmpty()) {
-            Glide.with(this).load(pictureUrl).into(imgProfile);
+            Glide.with(this)
+                    .load(Uri.parse(pictureUrl))
+                    .into(imgProfile);
         }
 
         rcCate = view.findViewById(R.id.rc_category);
