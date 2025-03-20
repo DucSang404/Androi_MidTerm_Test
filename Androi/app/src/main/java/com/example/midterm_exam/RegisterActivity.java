@@ -16,7 +16,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
-
         tvLogin = findViewById(R.id.tvRegister);
 
         tvLogin.setOnClickListener(new View.OnClickListener() {
