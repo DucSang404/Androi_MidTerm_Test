@@ -25,7 +25,6 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
     private EditText etOtp;
     private Button btnVerify;
-    private TextView tvResendOtp;
     private String userEmail;
 
     private ApiService apiService;
@@ -40,34 +39,34 @@ public class VerifyOtpActivity extends AppCompatActivity {
         etOtp = findViewById(R.id.etOtp);
         btnVerify = findViewById(R.id.verify);
 
-//        userEmail = getIntent().getStringExtra("email");
+        userEmail = getIntent().getStringExtra("email");
 
         btnVerify.setOnClickListener(v -> {
             Log.d("VerifyOtp", "Button clicked");
 
             String otp = etOtp.getText().toString().trim();
 
-            // Kiểm tra nếu OTP trống
             if (otp.isEmpty()) {
                 Toast.makeText(this, "Please enter the OTP", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Tạo đối tượng OtpRequest với email và OTP người dùng nhập
-//            OtpRequest otpRequest = new OtpRequest(userEmail, otp);
-            OtpRequest otpRequest = new OtpRequest("sonltute@gmail.com", otp);
+            OtpRequest otpRequest = new OtpRequest(userEmail, otp);
 
 
-            // Gửi yêu cầu xác thực OTP đến server
             apiService.verifyOtp(otpRequest).enqueue(new Callback<ApiResponse>() {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        if(response.code() == 200) {
+                            Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(VerifyOtpActivity.this, MainActivity.class));
+                            finish();
+                        }
+                        else {
+                            Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(VerifyOtpActivity.this, MainActivity.class));
-                        finish();
+                        }
                     } else {
                         Toast.makeText(VerifyOtpActivity.this, "Invalid OTP!", Toast.LENGTH_SHORT).show();
                     }
