@@ -22,11 +22,7 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    RecyclerView rcCate;
 
-    CategoryAdapter categoryAdapter;
-    ApiService apiService;
-    List<Category> categoryList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +40,7 @@ public class HomeActivity extends AppCompatActivity {
             loadFragment(selectedFragment);
             return true;
         });
-        AnhXa();
-        GetCategory();
+
     }
 
     private void loadFragment(Fragment fragment) {
@@ -53,36 +48,5 @@ public class HomeActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
-    private void GetCategory() {
-        apiService = RetrofitClient.getRetrofit().create(ApiService.class);
-        apiService.getCategoryAll().enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if(response.isSuccessful()){
-                    categoryList = response.body();
 
-                    categoryAdapter = new CategoryAdapter(HomeActivity.this, categoryList);
-                    rcCate.setHasFixedSize(true);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
-                            , LinearLayoutManager.HORIZONTAL, false);
-                    rcCate.setLayoutManager(layoutManager);
-                    rcCate.setAdapter(categoryAdapter);
-                    categoryAdapter.notifyDataSetChanged();
-
-                }else {
-                    int statusCode = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.d("logg", t.getMessage());
-
-            }
-        });
-    }
-
-    private void AnhXa() {
-        rcCate = (RecyclerView) findViewById(R.id.rc_category);
-    }
 }
