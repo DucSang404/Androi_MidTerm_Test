@@ -1,5 +1,4 @@
 package com.example.midterm_exam.model;
-
 public class User {
     private String password;
     private String fullName;
@@ -31,4 +30,5 @@ public class User {
         this.fullName = fullName;
         this.email = email;
     }
+
 }

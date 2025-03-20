@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: ${DBMS_URL:jdbc:mysql://localhost:3300/contest-mobile}
+    url: ${DBMS_URL:jdbc:mysql://localhost:3306/contest-mobile?createDatabaseIfNotExist=true}
     username: ${DBMS_USERNAME:root}
     password: ${DBMS_PASSWORD:1234}
     driverClassName: com.mysql.cj.jdbc.Driver

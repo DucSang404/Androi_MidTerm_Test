@@ -5,6 +5,7 @@ package com.example.midterm_exam;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -70,26 +71,38 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Định dạng email không hợp lệ!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
             return;
         }
         boolean g = gender.equals("Female");
-        User user = new User(name, email, password, g);
+        User user = new User(name, password,email, g);
 
         registerService.registerUser(user, new RegisterService.RegisterCallback() {
-            @Override
-            public void onSuccess(ApiResponse<User> user) {
-                Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivity.this, VerifyOtpActivity.class);
-                intent.putExtra("email", edtEmail.getText().toString());
-                startActivity(intent);
-            }
-            @Override
-            public void onFailure(String errorMessage) {
-                Toast.makeText(RegisterActivity.this, "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onSuccess(ApiResponse<User> user) {
+                        if(user.getResult()==null){
+                            Toast.makeText(RegisterActivity.this, user.getMessage(), Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            intent.putExtra("email", edtEmail.getText().toString());
+                            startActivity(intent);
+                        }
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(RegisterActivity.this, "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
+        }
     }
 
-}
+

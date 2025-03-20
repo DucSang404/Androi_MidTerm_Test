@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.UserEntity;
 import com.example.demo.model.*;
 import com.example.demo.service.AuthService;
 import com.example.demo.service.UserService;
@@ -28,10 +29,24 @@ public class UserController {
     // Nguyễn Công Quý - 22110403
     @PostMapping("/register")
     ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
-        return ApiResponse.<UserResponse>builder()
-                .code(200)
-                .result(userService.register(registerRequest))
-                .build();
+        UserResponse user = userService.register(registerRequest);
+        String message;
+        if(user == null){
+            message="Email đã tồn tại";
+            return ApiResponse.<UserResponse>builder()
+                    .code(200)
+                    .result(null)
+                    .message(message)
+                    .build();
+        }else {
+            message ="Đăng kí thành công";
+            return ApiResponse.<UserResponse>builder()
+                    .code(200)
+                    .message(message)
+                    .result(user)
+                    .build();
+        }
+
     }
 
     // Nguyễn Công Quý - 22110403
@@ -39,6 +54,7 @@ public class UserController {
     ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
         return ApiResponse.<UserResponse>builder()
                 .code(200)
+                .message("")
                 .result(userService.login(loginRequest))
                 .build();
     }

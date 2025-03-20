@@ -17,6 +17,8 @@ public class ApiResponse<T> {
         this.code = code;
     }
 
+    public ApiResponse() {
+    }
 
     public int getCode() {
         return code;
