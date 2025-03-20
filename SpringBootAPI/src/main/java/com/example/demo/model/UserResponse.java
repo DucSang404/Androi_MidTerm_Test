@@ -21,4 +21,5 @@ public class UserResponse {
     Integer isActive;
 
     String picture;
+    boolean gender;
 }

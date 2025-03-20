@@ -1,14 +1,17 @@
 package com.example.midterm_exam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,13 +30,16 @@ import com.example.midterm_exam.service.CategoryService;
 import java.util.ArrayList;
 import java.util.List;
 
-// Phạm Tiến Anh - nguyễn hoàng thùy linh - hoàng thị mỹ linh
 public class HomeFragment extends Fragment implements CategoryAdapter.OnProductAddedListener {
 
+// Phạm Tiến Anh - 22110282
+// Nguyễn Hoàng Thùy Linh - 22110364
+// Hoàng Thị Mỹ Linh - 22110363
+// Nguyễn Đức Sang - 22110404
     private RecyclerView rcCate;
     private GridView gridView;
     private CategoryAdapter categoryAdapter;
-    private ProductGridAdapter productAdapter; // Adapter riêng cho GridView
+    private ProductGridAdapter productAdapter;
     private ApiService apiService;
     private List<Category> categoryList = new ArrayList<>();
     private List<Category> lastProduct = new ArrayList<>();
@@ -65,6 +71,16 @@ public class HomeFragment extends Fragment implements CategoryAdapter.OnProductA
                 Glide.with(this).load(R.drawable.ic_launcher_background).into(imgProfile);
             }
         }
+
+        Button btnLogout = view.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(v -> {
+            prefManager.logout();
+            Toast.makeText(getContext(), "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
 
         rcCate = view.findViewById(R.id.rc_category);
         gridView = view.findViewById(R.id.gridview1);

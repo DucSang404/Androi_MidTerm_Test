@@ -1,11 +1,13 @@
 package com.example.midterm_exam.model;
-
 public class User {
     private String password;
     private String fullName;
     private String email;
     private int isActive;
     private String picture;
+
+    private boolean gender;
+
 
     public User() {
     }
@@ -38,7 +40,12 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+
+
+    public User(String fullName, String password,  String email, Boolean gender) {
+        this.gender = gender;
+        this.password = password;
+        this.fullName = fullName;
         this.email = email;
     }
 

@@ -8,6 +8,8 @@ import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.GetCategoryRequest;
 import com.example.midterm_exam.model.OtpRequest;
 import com.example.midterm_exam.model.Category;
+import com.example.midterm_exam.model.CategoryResponse;
+import com.example.midterm_exam.model.OtpRequest;
 import com.example.midterm_exam.model.User;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public interface ApiService {
     @GET("api/v1/users/{id}")
     Call<User> getUser(@Path("id") int userId);
 
+    @POST("api/v1/register")
+    Call<ApiResponse<User>> register(@Body User user);
     @GET("api/v1/category/all-category")
     Call<ApiResponse<List<CategoryResponse>>> getCategory();
 

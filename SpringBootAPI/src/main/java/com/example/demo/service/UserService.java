@@ -60,7 +60,7 @@ public class UserService {
 
         if (userRepository.findByEmail(request.getEmail()) != null) {
             log.info("Email existed");
-            throw new AppException(ErrorCode.EMAIL_EXISTED);
+            return null;
         }
 
         // Build new user for this request
@@ -74,7 +74,6 @@ public class UserService {
                 .build();
 
         try {
-
             // Tạo
             String otpCode = generateOtp();
             userEntity.setOtp(otpCode);
@@ -88,10 +87,7 @@ public class UserService {
                     + "Best regards,\n";
 
             // Gửi
-            boolean isSent = emailService.sendSimpleMail(userEntity.getEmail(), subject, body);
-            if (!isSent) {
-                throw new AppException(ErrorCode.INVALID_OTP_OR_EXPIRED);
-            }
+            emailService.sendSimpleMail(userEntity.getEmail(), subject, body);
             // Sau khi gửi thì trả về response
             // Nguyễn Công Quý - 22110403
             UserResponse userResponse = UserResponse.builder()
