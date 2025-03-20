@@ -23,6 +23,12 @@ public class CategoryEntity extends AbstractEntity { // phạm tiến anh - 2211
     String description;
     String imageUrl;
 
+    public CategoryEntity(String name, String description, String imageUrl) {
+        this.name = name;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
     @ManyToMany(mappedBy = "categorys")
     private Set<UserEntity> users = new HashSet<>();
 }

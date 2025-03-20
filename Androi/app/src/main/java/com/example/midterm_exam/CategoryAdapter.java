@@ -45,6 +45,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
         holder.itemView.setOnClickListener(v ->
                 Toast.makeText(context, "Bạn đã chọn Category: " + category.getName(), Toast.LENGTH_SHORT).show()
+
+                // gọi api cho category
+
+
+
+
         );
     }
 

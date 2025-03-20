@@ -6,6 +6,7 @@ import com.example.midterm_exam.model.CategoryResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//phạm tiến anh
 public class CategoryMapper {
 
     // Chuyển từ Category -> CategoryResponse
@@ -21,7 +22,7 @@ public class CategoryMapper {
     }
 
     // Chuyển từ CategoryResponse -> Category
-    public static Category toCategory(CategoryResponse categoryResponse, int id) {
+    public static Category toCategory(CategoryResponse categoryResponse, String id) {
         if (categoryResponse == null) {
             return null;
         }
@@ -38,7 +39,7 @@ public class CategoryMapper {
             return List.of(); // Trả về danh sách rỗng nếu đầu vào null hoặc rỗng
         }
         return categoryResponses.stream()
-                .map(response -> toCategory(response, 0)) // ID mặc định là 0, cần cập nhật nếu có ID thật
+                .map(response -> toCategory(response, response.getId())) // ID mặc định là 0, cần cập nhật nếu có ID thật
                 .collect(Collectors.toList());
     }
 }

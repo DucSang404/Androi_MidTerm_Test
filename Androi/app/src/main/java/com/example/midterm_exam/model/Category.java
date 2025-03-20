@@ -5,8 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Category implements Serializable {
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("name")
     private String name;
@@ -17,20 +21,13 @@ public class Category implements Serializable {
     @SerializedName("description")
     private String description;
 
-    public Category(int id, String name, String images, String description) {
+    public Category(String id, String name, String images, String description) {
         this.id = id;
         this.name = name;
         this.images = images;
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -54,5 +51,9 @@ public class Category implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
     }
 }

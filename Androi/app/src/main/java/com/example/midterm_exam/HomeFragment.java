@@ -28,8 +28,8 @@ import com.example.midterm_exam.service.CategoryService;
 import java.util.ArrayList;
 import java.util.List;
 
+//phạm tiến anh - nguyễn hoàng thùy linh - hoàng thị mỹ linh
 public class HomeFragment extends Fragment {
-    //phạm tiến anh - nguyễn hoàng thùy linh - hoàng thị mỹ linh
 
     private RecyclerView rcCate;
     private GridView gridView;
