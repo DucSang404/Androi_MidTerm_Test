@@ -3,10 +3,27 @@ package com.example.midterm_exam;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+
+import com.example.midterm_exam.config.RetrofitClient;
+import com.example.midterm_exam.model.Category;
+import com.example.midterm_exam.service.ApiService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,20 +40,12 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    RecyclerView rcCate;
+    GridView gridView;
+    CategoryAdapter categoryAdapter;
+    CategoryAdapter productAdapter;
+    ApiService apiService;
+    List<Category> categoryList;
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -49,16 +58,75 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        GetCategory();
+        //GetLastProduct();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        rcCate = view.findViewById(R.id.rc_category);
+        gridView = view.findViewById(R.id.gridview1);
+
+        return view;
     }
+
+    private void GetCategory() {
+        apiService = RetrofitClient.getRetrofit().create(ApiService.class);
+        apiService.getCategoryAll().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if(response.isSuccessful()){
+                    categoryList = response.body();
+
+                    categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+                    rcCate.setHasFixedSize(true);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                            getContext(), LinearLayoutManager.HORIZONTAL, false);
+                    rcCate.setLayoutManager(layoutManager);
+                    rcCate.setAdapter(categoryAdapter);
+                    categoryAdapter.notifyDataSetChanged();
+
+                }else {
+                    int statusCode = response.code();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Log.d("logg", t.getMessage());
+
+            }
+        });
+    }
+//    private void GetLastProduct(){
+//        apiService = RetrofitClient.getRetrofit().create(ApiService.class);
+//        apiService.getCategoryAll().enqueue(new Callback<List<Category>>() {
+//            @Override
+//            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+//                if(response.isSuccessful()){
+//                    categoryList = response.body();
+//
+//                    productAdapter = new CategoryAdapter(getContext(), categoryList);
+//
+//                    gridView.setAdapter((ListAdapter) productAdapter);
+//                    categoryAdapter.notifyDataSetChanged();
+//
+//                }else {
+//                    int statusCode = response.code();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Category>> call, Throwable t) {
+//                Log.d("logg", t.getMessage());
+//
+//            }
+//        });
+//    }
+
+
 }
