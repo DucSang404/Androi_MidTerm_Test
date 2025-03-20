@@ -13,5 +13,7 @@ public interface ApiService {
     @GET("api/v1/users/{id}")
     Call<User> getUser(@Path("id") int userId);
 
+    @GET("categories.php")
+    Call<List<Category>> getCategoryAll();
 
 }
