@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.midterm_exam.config.PrefManager;
 import com.example.midterm_exam.config.RetrofitClient;
 import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.AccountResponse;
@@ -65,9 +66,17 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             Log.d("MainActivity", "Đăng nhập thành công!");
+                            User user = response.body().getResult();
+
+                            PrefManager prefManager = new PrefManager(LoginActivity.this);
+                            prefManager.saveLoginDetails(user.getFullName(), user.getEmail(), user.getPicture());
+
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                            Log.d("LoginActivity", "Đăng nhập thành công!");
 
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             int errorCode = response.code();
                             String errorMessage = "Đăng nhập thất bại! Mã lỗi: " + errorCode;

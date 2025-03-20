@@ -7,12 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.midterm_exam.config.PrefManager;
 import com.example.midterm_exam.mapper.CategoryMapper;
 import com.example.midterm_exam.model.ApiResponse;
 import com.example.midterm_exam.model.Category;
@@ -34,9 +39,24 @@ public class HomeFragment extends Fragment {
     private List<Category> categoryList = new ArrayList<>();
     private List<Category> lastProduct = new ArrayList<>();
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        PrefManager prefManager = new PrefManager(getContext());
+
+        String fullName = prefManager.getFullName();
+        String pictureUrl = prefManager.getPicture();
+
+        TextView tvFullName = view.findViewById(R.id.tvUserName);
+        ImageView imgProfile = view.findViewById(R.id.cardView);
+
+        tvFullName.setText(fullName);
+
+        if (!pictureUrl.isEmpty()) {
+            Glide.with(this).load(pictureUrl).into(imgProfile);
+        }
 
         rcCate = view.findViewById(R.id.rc_category);
         gridView = view.findViewById(R.id.gridview1);
