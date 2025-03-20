@@ -30,6 +30,8 @@ import com.example.midterm_exam.service.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
+public class HomeFragment extends Fragment {
+
 // Phạm Tiến Anh - 22110282
 // Nguyễn Hoàng Thùy Linh - 22110364
 // Hoàng Thị Mỹ Linh - 22110363

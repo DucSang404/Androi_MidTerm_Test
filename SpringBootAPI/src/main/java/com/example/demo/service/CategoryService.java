@@ -37,6 +37,7 @@ public class CategoryService { // phạm tiến anh - 22110282
                 .name(categoryEntity.getName())
                 .description(categoryEntity.getDescription())
                 .imageUrl(categoryEntity.getImageUrl())
+                .id(categoryEntity.getId())
                 .build();
     }
 

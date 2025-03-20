@@ -1,7 +1,18 @@
 package com.example.midterm_exam.model;
 
 public class CategoryResponse {
+
+    String id;
     String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     String description;
 
     public CategoryResponse(String name, String description, String imageUrl) {
