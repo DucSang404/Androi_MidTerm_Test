@@ -3,7 +3,7 @@ package com.example.demo.service;
 // Nguyễn Duy Phong - 22110395
 
 import com.example.demo.entity.UserEntity;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     public int verifyUser(String email, String otp) {
         UserEntity foundUser = userRepository.findByEmail(email);
@@ -21,6 +21,9 @@ public class AuthService {
         if (!foundUser.getOtp().equals(otp)) {
             return 0; // Otp không đúng
         }
+
+        foundUser.setIsActive(1);
+        userRepository.save(foundUser);
         return 1; // Success
     }
 }

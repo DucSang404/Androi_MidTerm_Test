@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+// Nguyễn Công Quý - 22110403
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,12 +12,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class UserResponse {
-    String id;
-    String username;
     String password;
-    String firstName;
-    String lastName;
+
+    String fullName;
+
     String email;
+
     Integer isActive;
+
     String picture;
 }

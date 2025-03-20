@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+// Nguyễn Công Quý - 22110403
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

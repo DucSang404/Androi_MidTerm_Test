@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+// Nguyễn Công Quý - 22110403
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,8 +10,16 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class User {
-    private int id;
-    private String name;
-    private String email;
+public class RegisterRequest {
+    String password;
+
+    String fullName;
+
+    String email;
+
+    String otp;
+
+    Integer isActive;
+
+    Boolean gender;
 }

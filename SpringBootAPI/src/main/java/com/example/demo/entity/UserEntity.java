@@ -1,12 +1,13 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+// Nguyễn Duy Phong - 22110395
+// Nguyễn Công Quý - 22110403
+
 
 @Entity(name = "tbl_user")
 @Getter
