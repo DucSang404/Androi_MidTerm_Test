@@ -8,8 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.midterm_exam.service.ApiService;
-import com.example.midterm_exam.service.UserService;
-//Nguyen Duc Sang - 22110404
+//22110404 - Nguyễn Đức Sang
 public class MainActivity extends AppCompatActivity {
     private ApiService apiService;
     private Button btnStart;
