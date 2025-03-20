@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.example.midterm_exam.model.Category;
 
 import java.util.List;
@@ -55,9 +55,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         Category category = array.get(position);
         holder.tenSp.setText(category.getName());
 
-        Glide.with(context)
-                .load(category.getImages())
-                .into(holder.images);
+//        Glide.with(context)
+//                .load(category.getImages())
+//                .into(holder.images);
     }
 
     @Override
