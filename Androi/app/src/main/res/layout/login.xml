@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Are you new user? Register"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="#3b608c"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
