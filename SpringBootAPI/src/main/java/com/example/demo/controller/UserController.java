@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.ApiResponse;
-import com.example.demo.model.User;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.model.RegisterRequest;
+import com.example.demo.model.UserResponse;
+import com.example.demo.service.UserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,34 +23,23 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserController {
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") int id) {
-        User user = User.builder()
-                .id(1)
-                .email("demo@gmail.com")
-                .name("demo")
-                .build();
-        return ResponseEntity.ok(user);
-    }
+    UserService userService;
 
-    @PostMapping("/create-user")
-    ApiResponse<Object> createUser() {
-        return ApiResponse.<Object>builder()
+    // Nguyễn Công Quý - 22110403
+    @PostMapping("/register")
+    ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+        return ApiResponse.<UserResponse>builder()
                 .code(200)
+                .result(userService.register(registerRequest))
                 .build();
     }
 
-    @GetMapping("/get-all-user")
-    ApiResponse<List<Object>> getAllUsers() {
-        return ApiResponse.<List<Object>>builder()
+    // Nguyễn Công Quý - 22110403
+    @PostMapping("/login")
+    ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ApiResponse.<UserResponse>builder()
                 .code(200)
-                .build();
-    }
-
-    @GetMapping("/get-user/{id}")
-    ApiResponse<Object> getUserById(@PathVariable("id") String id) {
-        return ApiResponse.<Object>builder()
-                .code(200)
+                .result(userService.login(loginRequest))
                 .build();
     }
 }

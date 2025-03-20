@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+// Nguyễn Công Quý - 22110403
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
