@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,13 +29,13 @@ import com.example.midterm_exam.service.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
-public class HomeFragment extends Fragment {
+
+public class HomeFragment extends Fragment implements CategoryAdapter.OnProductAddedListener {
 
 // Phạm Tiến Anh - 22110282
 // Nguyễn Hoàng Thùy Linh - 22110364
 // Hoàng Thị Mỹ Linh - 22110363
 // Nguyễn Đức Sang - 22110404
-public class HomeFragment extends Fragment {
     private RecyclerView rcCate;
     private GridView gridView;
     private CategoryAdapter categoryAdapter;
@@ -44,6 +43,11 @@ public class HomeFragment extends Fragment {
     private ApiService apiService;
     private List<Category> categoryList = new ArrayList<>();
     private List<Category> lastProduct = new ArrayList<>();
+
+    @Override
+    public void onProductAdded() {
+        fetchLastProduct(); // Gọi API để cập nhật GridView khác
+    }
 
 
     @Override
@@ -92,7 +96,7 @@ public class HomeFragment extends Fragment {
 
 
     private void setupRecyclerView() {
-        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList, this);
         rcCate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rcCate.setHasFixedSize(true);
         rcCate.setAdapter(categoryAdapter);
@@ -130,7 +134,9 @@ public class HomeFragment extends Fragment {
         CategoryService categoryService = new CategoryService();
         CategoryMapper mapper = new CategoryMapper();
 
-        String username = "admin";
+
+        String username = new PrefManager(requireContext()).getEmail();
+
 
         categoryService.fetchLastProductForUser(username,new CategoryService.CategoryCallBack() {
             @Override
@@ -147,6 +153,11 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    public interface OnProductAddedListener {
+        void onProductAdded();
+    }
+
 
 
 
