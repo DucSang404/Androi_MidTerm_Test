@@ -46,17 +46,17 @@ public class UserController {
     // Nguyễn Công Quý - 22110403
     @PostMapping("/register")
     ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
-        userRepository.save(
-                UserEntity.builder()
-                        .email("ducsang")
-                        .password("1234")
-                        .picture("dkfeifere")
-                        .fullName("dsdsd")
-                        .build()
-        );
+//        userRepository.save(
+//                UserEntity.builder()
+//                        .email("ducsang")
+//                        .password("1234")
+//                        .picture("dkfeifere")
+//                        .fullName("dsdsd")
+//                        .build()
+//        );
         return ApiResponse.<UserResponse>builder()
                 .code(200)
-                // .result(userService.register(registerRequest))
+                .result(userService.register(registerRequest))
                 .build();
     }
 
