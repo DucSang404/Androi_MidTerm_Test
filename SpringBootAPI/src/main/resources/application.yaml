@@ -20,8 +20,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: duyphong02802@gmail.com
-    password: aymqvnmmhkjbuytz
+    username: quangthinh06112004@gmail.com
+    password: xpwa adnf fucb tkzk
     from: "Food.Dr <duyphong02802@gmail.com>"
     properties:
       mail:
