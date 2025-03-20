@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.midterm_exam.config.PrefManager;
 import com.example.midterm_exam.config.RetrofitClient;
 import com.example.midterm_exam.model.Category;
 import com.example.midterm_exam.service.ApiService;
