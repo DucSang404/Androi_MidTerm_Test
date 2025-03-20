@@ -43,7 +43,7 @@ public class ProductGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_category, parent, false);
+            convertView = inflater.inflate(R.layout.item_last_product, parent, false);
             holder = new ViewHolder();
             holder.imageView = convertView.findViewById(R.id.image_cate);
             holder.textView = convertView.findViewById(R.id.tvNameCategory);
