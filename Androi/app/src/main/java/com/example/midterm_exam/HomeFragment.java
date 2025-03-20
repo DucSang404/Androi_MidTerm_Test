@@ -1,109 +1,114 @@
 package com.example.midterm_exam;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.midterm_exam.mapper.CategoryMapper;
 import com.example.midterm_exam.model.ApiResponse;
+import com.example.midterm_exam.model.Category;
 import com.example.midterm_exam.model.CategoryResponse;
 import com.example.midterm_exam.service.CategoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
-    // Phạm Tiến Anh - 22110282
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView rcCate;
+    private GridView gridView;
+    private CategoryAdapter categoryAdapter;
+    private ProductGridAdapter productAdapter;
+    private List<Category> categoryList = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-//    CategoryService categoryService;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-    private List<CategoryResponse> categoryResponseList;
-    private List<CategoryResponse> lastProductList;
+        // Ánh xạ RecyclerView & GridView
+        rcCate = view.findViewById(R.id.rc_category);
+        gridView = view.findViewById(R.id.gridview1); // Đảm bảo ID đúng với XML
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+        setupRecyclerView();
+        setupGridView();
 
+        fetchAllCategory();
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        //GetLastProduct();
+    }
+
+    private void setupRecyclerView() {
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+        rcCate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rcCate.setHasFixedSize(true);
+        rcCate.setAdapter(categoryAdapter);
+    }
+
+    private void setupGridView() {
+        if (gridView != null) { // Kiểm tra tránh null
+            productAdapter = new ProductGridAdapter(getContext(), categoryList);
+            gridView.setAdapter(productAdapter);
+        } else {
+            Log.e("HomeFragment", "GridView is NULL. Check fragment_home.xml ID.");
         }
-        CategoryService categoryService = new CategoryService();
-        fetchAllCategory();
-        fetchLastProduct();
-
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    private void fetchAllCategory () {
+    private void fetchAllCategory() {
         CategoryService categoryService = new CategoryService();
-
         categoryService.fetchCategoryData(new CategoryService.CategoryCallBack() {
             @Override
-            public void onSuccess(ApiResponse<List<CategoryResponse>> categorysResponses) {
-                categoryResponseList = categorysResponses.getResult();
+            public void onSuccess(ApiResponse<List<CategoryResponse>> categoryResponses) {
+                if (categoryResponses != null && categoryResponses.getResult() != null) {
+                    categoryList.clear();
+                    categoryList = CategoryMapper.toCategoryList(categoryResponses.getResult());
+
+                    categoryAdapter.notifyDataSetChanged(); // Cập nhật RecyclerView
+                }
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.d("MainActivity", errorMessage);
+                Log.e("HomeFragment", "Fetch Categories Failed: " + errorMessage);
             }
         });
     }
 
-    private void fetchLastProduct () {
-
+    private void fetchLastProduct() {
         CategoryService categoryService = new CategoryService();
-
         String username = "tienanh19";
 
-        categoryService.fetchLastProductForUser(username,new CategoryService.CategoryCallBack() {
+        categoryService.fetchLastProductForUser(username, new CategoryService.CategoryCallBack() {
             @Override
-            public void onSuccess(ApiResponse<List<CategoryResponse>> categorysResponses) {
-                categoryResponseList = categorysResponses.getResult();
+            public void onSuccess(ApiResponse<List<CategoryResponse>> categoryResponses) {
+                if (categoryResponses != null && categoryResponses.getResult() != null) {
+                    categoryList.clear();
+                    categoryList.addAll(CategoryMapper.toCategoryList(categoryResponses.getResult()));
+
+                    if (gridView != null) {
+                        productAdapter.notifyDataSetChanged(); // Cập nhật GridView
+                    }
+                }
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Log.d("MainActivity", errorMessage);
+                Log.e("HomeFragment", "Fetch Last Products Failed: " + errorMessage);
             }
         });
     }
-
-
 }

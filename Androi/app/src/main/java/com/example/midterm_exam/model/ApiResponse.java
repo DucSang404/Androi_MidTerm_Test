@@ -30,6 +30,13 @@ public class ApiResponse<T> {
     public void setCode(int code) {
         this.code = code;
     }
+// Lê Trường Sơn 22110507
+
+    private boolean success;
+
+    public boolean isSuccess() {
+        return success;
+    }
 
     public String getMessage() {
         return message;
