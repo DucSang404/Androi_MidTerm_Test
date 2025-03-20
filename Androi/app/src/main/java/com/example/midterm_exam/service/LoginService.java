@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.midterm_exam.config.RetrofitClient;
 import com.example.midterm_exam.model.Account;
+import com.example.midterm_exam.model.AccountResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,23 +24,27 @@ public class LoginService {
         }
 
         Account request = new Account(email, password);
-        Call<Account> call = apiService.login(request.getEmail(), request.getPassword());
+        Call<AccountResponse> call = apiService.login(request);
 
-        call.enqueue(new Callback<Account>() {
+        call.enqueue(new Callback<AccountResponse>() {
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
+            public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess("Đăng nhập thành công!");
+                    callback.onSuccess();
                     Log.d("LoginService", "Đăng nhập thành công!");
 
                 } else {
-                    callback.onError("Đăng nhập thất bại!");
+                    int errorCode = response.code();
+                    String errorMessage = "Đăng nhập thất bại! Mã lỗi: " + errorCode;
+                    String errorBody = response.errorBody() != null ? response.errorBody().toString() : "Không có thông tin lỗi";
+                    errorMessage += "\nChi tiết: " + errorBody;
+                    callback.onError(errorMessage);
                     Log.d("LoginService", "Đăng nhập thất bại!");
                 }
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
+            public void onFailure(Call<AccountResponse> call, Throwable t) {
                 callback.onError("Lỗi kết nối: " + t.getMessage());
                 Log.e("LoginError", t.getMessage());
             }
@@ -47,7 +52,7 @@ public class LoginService {
     }
 
     public interface LoginCallback {
-        void onSuccess(String token);
+        void onSuccess();
         void onError(String errorMessage);
     }
 }

@@ -42,6 +42,8 @@ public class UserService {
         if (!authenticated)
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
+
+
         return UserResponse.builder()
                 .isActive((user.getIsActive() == null || user.getIsActive() == 0) ? 0 : 1)
                 .fullName("Login successful with " + user.getFullName())
