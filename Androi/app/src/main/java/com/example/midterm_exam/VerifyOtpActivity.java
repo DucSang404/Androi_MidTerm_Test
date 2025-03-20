@@ -2,6 +2,7 @@ package com.example.midterm_exam;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,54 +32,54 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_otp);
 
         etOtp = findViewById(R.id.etOtp);
-        btnVerify = findViewById(R.id.btnVerify);
-        tvResendOtp = findViewById(R.id.tvResendOtp);
+        btnVerify = findViewById(R.id.verify);
 
-        userEmail = getIntent().getStringExtra("email");
+//        userEmail = getIntent().getStringExtra("email");
 
-        btnVerify.setOnClickListener(v -> verifyOtp());
-        tvResendOtp.setOnClickListener(v -> resendOtp());
+        btnVerify.setOnClickListener(v -> {
+            Log.d("VerifyOtp", "Button clicked");
 
-        apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-    }
+            String otp = etOtp.getText().toString().trim();
 
-    private void verifyOtp() {
-        String otp = etOtp.getText().toString().trim();
+            // Kiểm tra nếu OTP trống
+            if (otp.isEmpty()) {
+                Toast.makeText(this, "Please enter the OTP", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if (otp.isEmpty()) {
-            Toast.makeText(this, "Please enter the OTP", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-//       OtpRequest otpRequest = new OtpRequest(userEmail, otp);
-        OtpRequest otpRequest = new OtpRequest("sonltute@gmail.com", otp);
+            // Tạo đối tượng OtpRequest với email và OTP người dùng nhập
+//            OtpRequest otpRequest = new OtpRequest(userEmail, otp);
+            OtpRequest otpRequest = new OtpRequest("sonltute@gmail.com", otp);
 
 
-        apiService.verifyOtp(otpRequest).enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().isSuccess()) {
+            // Gửi yêu cầu xác thực OTP đến server
+            apiService.verifyOtp(otpRequest).enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
                         Toast.makeText(VerifyOtpActivity.this, "OTP verified successfully!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(VerifyOtpActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(VerifyOtpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VerifyOtpActivity.this, "Invalid OTP!", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(VerifyOtpActivity.this, "Invalid OTP!", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Toast.makeText(VerifyOtpActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Toast.makeText(VerifyOtpActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+
     }
 
     private void resendOtp() {
