@@ -27,17 +27,19 @@ public class UserController {
 
     @GetMapping("/demo")
     ApiResponse<String> demo() {
+        UserEntity user = UserEntity.builder()
+                .email("ducsang")
+                .password("1234")
+                .picture("dkfeifere")
+                .fullName("dsdsd")
+                .build();
         userRepository.save(
-                UserEntity.builder()
-                        .email("ducsang")
-                        .password("1234")
-                        .picture("dkfeifere")
-                        .fullName("dsdsd")
-                        .build()
+                user
         );
         return ApiResponse.<String>builder()
+                .message("")
                 .code(200)
-                // .result(userService.register(registerRequest))
+                .result(user.getEmail())
                 .build();
     }
 
@@ -62,6 +64,7 @@ public class UserController {
     @PostMapping("/login")
     ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
         return ApiResponse.<UserResponse>builder()
+                .message("")
                 .code(200)
                 .result(userService.login(loginRequest))
                 .build();

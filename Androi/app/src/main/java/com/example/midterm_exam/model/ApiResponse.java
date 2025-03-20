@@ -5,6 +5,24 @@ public class ApiResponse<T> {
     String message;
     T result;
 
+    public ApiResponse(int code, String message, T result) {
+        this.code = code;
+        this.message = message;
+        this.result = result;
+    }
+
+    public ApiResponse() {
+    }
+
+    public ApiResponse(int code) {
+        this.code = code;
+    }
+
+    public ApiResponse(int code, T result) {
+        this.code = code;
+        this.result = result;
+    }
+
     public int getCode() {
         return code;
     }

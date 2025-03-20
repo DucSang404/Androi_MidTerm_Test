@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.midterm_exam.config.RetrofitClient;
 import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.AccountResponse;
+import com.example.midterm_exam.model.ApiResponse;
+import com.example.midterm_exam.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,11 +26,11 @@ public class LoginService {
         }
 
         Account request = new Account(email, password);
-        Call<AccountResponse> call = apiService.login(request);
+        Call<ApiResponse<User>> call = apiService.login(request);
 
-        call.enqueue(new Callback<AccountResponse>() {
+        call.enqueue(new Callback<ApiResponse<User>>() {
             @Override
-            public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+            public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess();
                     Log.d("LoginService", "Đăng nhập thành công!");
@@ -44,7 +46,7 @@ public class LoginService {
             }
 
             @Override
-            public void onFailure(Call<AccountResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
                 callback.onError("Lỗi kết nối: " + t.getMessage());
                 Log.e("LoginError", t.getMessage());
             }

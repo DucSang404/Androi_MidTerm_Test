@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.midterm_exam.config.RetrofitClient;
 import com.example.midterm_exam.model.Account;
 import com.example.midterm_exam.model.AccountResponse;
+import com.example.midterm_exam.model.ApiResponse;
+import com.example.midterm_exam.model.User;
 import com.example.midterm_exam.service.ApiService;
 import com.example.midterm_exam.service.LoginService;
 
@@ -43,31 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         //loginService = new LoginService();
         apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-//        btnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String email = edtEmail.getText().toString().trim();
-//                String password = edtPass.getText().toString().trim();
-//
-//                loginService.login(email, password, new LoginService.LoginCallback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-//
-//                        Intent intent = new Intent(LoginActivity.this, SuccessActivity.class);
-//                        startActivity(intent);
-//                    }
-//
-//                    @Override
-//                    public void onError(String errorMessage) {
-//                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
-//    }
-//}
-
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,14 +59,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("MainActivity", "Gửi yêu cầu đăng nhập...");
 
                 Account request = new Account(email, password);
-                apiService.login(request).enqueue(new Callback<AccountResponse>() {
+                apiService.login(request).enqueue(new Callback<ApiResponse<User>>() {
                     @Override
-                    public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+                    public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             Log.d("MainActivity", "Đăng nhập thành công!");
 
-                            Intent intent = new Intent(LoginActivity.this, SuccessActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                         } else {
                             int errorCode = response.code();
@@ -103,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<AccountResponse> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
                         Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e("MainActivity", "Lỗi kết nối: " + t.getMessage());
                     }

@@ -55,9 +55,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         Category category = array.get(position);
         holder.tenSp.setText(category.getName());
 
-        Glide.with(context)
-                .load(category.getImages())
-                .into(holder.images);
+//        Glide.with(context)
+//                .load(category.getImages())
+//                .into(holder.images);
     }
 
     @Override
