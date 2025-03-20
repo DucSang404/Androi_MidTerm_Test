@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/w8.iml" filepath="$PROJECT_DIR$/.idea/w8.iml" />
+=======
       <module fileurl="file://$PROJECT_DIR$/.idea/Androi_MidTerm_Test.iml" filepath="$PROJECT_DIR$/.idea/Androi_MidTerm_Test.iml" />
+>>>>>>> 65e107f47ecc299bcacd1136543edf9b3175fe1f
     </modules>
   </component>
 </project>

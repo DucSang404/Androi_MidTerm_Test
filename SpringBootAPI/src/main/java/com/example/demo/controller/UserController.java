@@ -46,18 +46,23 @@ public class UserController {
     // Nguyễn Công Quý - 22110403
     @PostMapping("/register")
     ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
-//        userRepository.save(
-//                UserEntity.builder()
-//                        .email("ducsang")
-//                        .password("1234")
-//                        .picture("dkfeifere")
-//                        .fullName("dsdsd")
-//                        .build()
-//        );
-        return ApiResponse.<UserResponse>builder()
-                .code(200)
-                .result(userService.register(registerRequest))
-                .build();
+        UserResponse user = userService.register(registerRequest);
+        String message;
+        if(user == null){
+            message="Email đã tồn tại";
+            return ApiResponse.<UserResponse>builder()
+                    .code(200)
+                    .result(null)
+                    .message(message)
+                    .build();
+        }else {
+            message ="Đăng kí thành công";
+            return ApiResponse.<UserResponse>builder()
+                    .code(200)
+                    .message(message)
+                    .result(user)
+                    .build();
+        }
     }
 
     // Nguyễn Công Quý - 22110403
@@ -66,6 +71,7 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .message("")
                 .code(200)
+                .message("")
                 .result(userService.login(loginRequest))
                 .build();
     }
