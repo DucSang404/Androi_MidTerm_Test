@@ -18,6 +18,6 @@ public interface ApiService {
     @POST("api/v1/login")
     Call<Account> login(@Path("username") String username, @Path("password") String password);
 
-    @POST("api/verify-otp")
+    @POST("api/v1/verify-user")
     Call<ApiResponse> verifyOtp(@Body OtpRequest otpRequest);
 }
